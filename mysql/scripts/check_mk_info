@@ -1,0 +1,58 @@
+#!/usr/bin/python3.5
+
+
+factory_settings['check_mk_info_default_value'] = {
+    'config': ((None, None), False),
+}
+
+
+def inventory_check_mk_info(info):
+    """
+    Ham nay se lay output tu ham plugin check o agent sau do list ra cac services trong checkMK
+    :param info: 'Number of insert per second : 1\nNumber of select per second : 0\nNumber of query per second : 1'
+    :return: 'MySQL service: Number of insert per second', 'MySQL service: Number of select per second', 'MySQL service: Number of query per second'
+    """
+    for line in info:
+       line = " ".join(line)
+       line = str(line)
+       data = line.split(':')
+       check_mysql_info_item =  "MySQL service: " + str(data[0])
+       yield (check_mysql_info_item, "check_mk_info_default_value")
+
+
+def check_mk_info(item, params, info):
+    """
+    kiem tra status service, info server, PERF-O-METER service
+    :param item: 'MySQL service: Number of insert per second'
+    :param params: {'config': ((None, None), False)}
+    :param info: 'Number of insert per second : 1\nNumber of select per second : 0\nNumber of query per second : 1'
+    :return: state, message, perfdata = (0, 'Number of select per second  :  0', [(u'Number of select per second ', 0)])
+    """
+    hostinfo_in_item=''
+    if ":" in item:
+        item_as_list = item.split(": ")
+        host_in_item, hostinfo_in_item = item_as_list
+    #print(host_in_item)
+    #print(hostinfo_in_item)
+    info_as_dict = {}
+    for line in info:
+        #print line
+        line = " ".join(line)
+        line = str(line)
+        if ":" in line:
+            line_as_list = line.split(':')
+            info_as_dict.update({line_as_list[0]: line_as_list[1]})
+    #print(info_as_dict[hostinfo_in_item])
+    #print([(hostinfo_in_item, int(info_as_dict[hostinfo_in_item]))])
+    return 0, "{} : {}".format(hostinfo_in_item, info_as_dict[hostinfo_in_item]), [(hostinfo_in_item, int(info_as_dict[hostinfo_in_item]))]
+
+
+# check_mk_info la ten cua plugin
+check_info ["check_mk_info"] = {
+    'default_levels_variable': "check_mk_info_default_value",
+    'inventory_function': inventory_check_mk_info,
+    'check_function': check_mk_info,
+    'service_description': 'CheckMK info',
+    'has_perfdata': True,
+    'group': "check_mk_info",
+}
