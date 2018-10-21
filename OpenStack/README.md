@@ -34,7 +34,7 @@
     LocalDirectory: /usr/lib/check_mk_agent/local
     ```
 
-- Thư plugin check được đặt tại thư mục `/usr/lib/check_mk_agent/plugins`. Các bạn có thể tải scripts ở <a href="https://github.com/mịnkma">Github</a> cá nhân của mình. 
+- Thư plugin check được đặt tại thư mục `/usr/lib/check_mk_agent/plugins`. Các bạn có thể tải scripts ở <a href="https://github.com/MinhKMA/plugin_checkMK/tree/master/OpenStack/client">Github</a> cá nhân của mình. 
 
     ```
     [root@check_mk plugins]# pwd
@@ -142,7 +142,7 @@
         
             <img src='https://i.imgur.com/WLbT2eO.png'>
 
-    + Tải các scripts từ <a href="https://github.com/mịnkma">Github</a> đặt vào thư mục `checks` 
+    + Tải các scripts từ <a href="https://github.com/MinhKMA/plugin_checkMK/tree/master/OpenStack/server">Github</a> đặt vào thư mục `checks` 
 
     ```
     OMD[monitoring]:/opt/omd/sites/monitoring/local/share/check_mk$ ls checks/
